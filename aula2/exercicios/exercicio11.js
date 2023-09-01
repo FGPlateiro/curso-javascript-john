@@ -49,53 +49,69 @@ const alphabet = [
     "z",
 ];
 
-// find the error on this algorithm it is not working with different size words
+
+const alphabetMap = {};
+
+for (let index = 0; index < alphabet.length; index++) {
+    const letter = alphabet[index];
+    alphabetMap[letter] = index;
+}
 
 for (let index = 0; index < words.length; index++) {
-    const actualWord = words[index];
+
     const nextWord = words[index + 1];
 
     if (nextWord === undefined) {
         continue;
     }
 
+    const actualWord = words[index];
+
+
     for (let index2 = 0; index2 < actualWord.length; index2++) {
-        const actualWordLetter = actualWord.charAt(index2);
-        const nextWordLetter = nextWord.charAt(index2);
 
+        const actualWordActualLetter = actualWord.charAt(index2);
+        let actualWordPreviousLetter = 0;
 
-        let alphabetIndexActualLetter = 0;
-        let alphabetIndexNextLetter = 0;
+        const nextWordActualLetter = nextWord.charAt(index2);
+        let nextWordPreviousLetter = 0;
 
-        for (
-            let alphabetIndex = 0;
-            alphabetIndex < alphabet.length;
-            alphabetIndex++
-        ) {
-            const actualAlphabetLetter = alphabet[alphabetIndex];
+        const actualLetterIndexInAlphabet = alphabetMap[actualWordActualLetter];
+        let nextLetterIndexInAlphabet = alphabetMap[nextWordActualLetter];
 
-            if (actualAlphabetLetter == actualWordLetter) {
-                alphabetIndexActualLetter = alphabetIndex;
-            }
+        let actualWordPreviousLetterIndexInAlphabet = 0;
+        let nextWordPreviousLetterIndexInAlphabet = 0;
 
-            if (actualAlphabetLetter == nextWordLetter) {
-                alphabetIndexNextLetter = alphabetIndex;
-            }
+        if (index2 > 0) {
+            actualWordPreviousLetter = actualWord.charAt(index2 - 1);
+            nextWordPreviousLetter = nextWord.charAt(index2 - 1);
 
-            if (alphabetIndexActualLetter != 0 && alphabetIndexNextLetter != 0) {
+            actualWordPreviousLetterIndexInAlphabet = alphabetMap[actualWordPreviousLetter];
+            nextWordPreviousLetterIndexInAlphabet = alphabetMap[nextWordPreviousLetter];
+
+            if (
+                actualLetterIndexInAlphabet > nextLetterIndexInAlphabet
+                && actualWordPreviousLetterIndexInAlphabet === nextWordPreviousLetterIndexInAlphabet
+            ) {
+                words[index] = nextWord;
+                words[index + 1] = actualWord;
+                index = -1;
                 break;
             }
 
-        }
 
-        if (alphabetIndexActualLetter > alphabetIndexNextLetter) {
+        } else if (actualLetterIndexInAlphabet > nextLetterIndexInAlphabet) {
             words[index] = nextWord;
             words[index + 1] = actualWord;
+            index = -1;
             break;
         }
+
+
     }
 }
 
 
-console.log(`Palavras: ${words.join(", ")}`);
+console.log(`Palavras ordenadas: ${words.join(", ")}`);
+
 

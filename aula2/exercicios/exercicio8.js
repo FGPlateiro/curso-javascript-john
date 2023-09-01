@@ -3,17 +3,35 @@
  * Crie um programa que atribua letras (como A, B, C) para as notas que você obteve em um teste.
  */
 
-const nota = 3;
 
-if (nota < 0){
-    console.log (" nota invalido");
-} 
- if (nota <= 3){
-    console.log ("Sua nota é C");
-}
- if (nota > 3 && nota <= 7){
-    console.log ("sua nota é B");
-}
- if (nota > 7 ){
-    console.log (" sua nota é A")
+const notesMap = [
+    {
+        min: 0,
+        max: 7,
+        note: "C"
+    },
+    {
+        min: 7.1,
+        max: 9.99,
+        note: "B"
+    },
+    {
+        min: 10,
+        max: 10,
+        note: "A"
+    },
+];
+
+const note = 5;
+
+
+for(let i = 0; i< notesMap.length; i++){
+
+    const currentNote = notesMap[i];
+
+    if(note >= currentNote.min && note <= currentNote.max ){
+        console.log(`a sua media é : ${currentNote.note}`);
+        break;
+    }
+
 }

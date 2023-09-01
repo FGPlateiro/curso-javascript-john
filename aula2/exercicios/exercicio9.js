@@ -1,38 +1,13 @@
 /**
- * Validação de password: Construa um guarda de segurança digital! 
- * Crie um programa que verifica se a password que você escolheu é forte o suficiente para proteger suas coisas.
- * uma password forte o suficiente deve ter ao menos 8 digitos, conter números e letras maíusculas e minúsculas
+ * Validação de Senha: Construa um guarda de segurança digital!
+ * Crie um programa que verifica se a senha que você escolheu é forte o suficiente para proteger suas coisas.
+ * uma senha forte o suficiente deve ter ao menos 8 digitos, conter números e letras maíusculas e minúsculas
  */
 
-const letter = [
-    "a",
-    "b",
-    "c",
-    "d",
-    "e",
-    "f",
-    "g",
-    "h",
-    "i",
-    "j",
-    "k",
-    "l",
-    "m",
-    "n",
-    "o",
-    "p",
-    "q",
-    "r",
-    "s",
-    "t",
-    "u",
-    "v",
-    "x",
-    "z",
-    "y",
-]
-
-const letterUP = [
+const validations = {
+  minPasswordSize: 8,
+  numbersMap: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+  alphabet: [
     "A",
     "B",
     "C",
@@ -55,59 +30,68 @@ const letterUP = [
     "T",
     "U",
     "V",
+    "W",
     "X",
-    "Z",
     "Y",
-]
+    "Z",
+  ],
+};
 
-const number = [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-]
+let hasMinimumSize = false;
+let hasNumbers = false;
+let hasUpperCaseLetters = false;
+let hasLowerCaseLetters = false;
 
-const especialChar = [
-    "@",
-    "#",
-    "$",
-    "%",
-    "_",
-    "&",
-    "*",
-    "ç",
-    "/",
-    "<",
-    ">",
-    "¨",
-    "^",
-    "~",
-    "-",
-    "+",
-    ".",
-]
+// input
+const password = "John@123";
 
-const password = "Plateiro@1234";
+// Processamento
 
-let letterQuantity = 0;
+// Primeira regra, a senha deve ter ao menos x dígitos
+hasMinimumSize = password.length >= validations.minPasswordSize;
 
-let numberQuantity = 0;
+let isPasswordStronger = false;
 
-let letterUp = 0;
+for (let index = 0; index < password.length; index++) {
+  const currentLetter = password.charAt(index);
 
-let especialCharQuantity = 0;
+  // A senha deve conter números
+  for (let index2 = 0; index2 < validations.numbersMap.length; index2++) {
+    const currentNumber = validations.numbersMap[index2];
 
-const passwordSize = password.length;
-
-     
-    if (password.lenght < 8){
-
-        
+    if (currentLetter === currentNumber) {
+      hasNumbers = true;
+      break;
     }
-    
+  }
+
+  for (let index3 = 0; index3 < validations.alphabet.length; index3++) {
+    const currentAlphabet = validations.alphabet[index3];
+
+    // a senha deve conter letras maiusculas
+
+    hasUpperCaseLetters = currentLetter === currentAlphabet;
+
+    // a senha deve conter letras minusculas
+    hasLowerCaseLetters = currentLetter === currentAlphabet.toLowerCase();
+
+    //se a senha tiver maiusculas e minusculas, para a execução para poupar processamento
+    if (hasUpperCaseLetters && hasLowerCaseLetters) {
+      break;
+    }
+  }
+
+  isPasswordStronger =
+    hasMinimumSize && hasNumbers && hasUpperCaseLetters && hasLowerCaseLetters;
+
+  if (isPasswordStronger) {
+    break;
+  }
+}
+
+//output
+console.log(`hasMinimumSize: ${hasMinimumSize}`);
+console.log(`hasNumbers: ${hasNumbers}`);
+console.log(`hasUpperCaseLetters: ${hasUpperCaseLetters}`);
+console.log(`hasLowerCaseLetters: ${hasLowerCaseLetters}`);
+console.log(`A senha ${password} é ${isPasswordStronger ? "forte" : "fraca"}`);
